@@ -26,13 +26,18 @@ jobs:
       - if: github.event_name == 'push'
         name: Upload PDF to examples branch
         run: |
+          ls -lah
           git fetch origin examples
           rm -rf /tmp/pdfs
           mkdir -p /tmp/pdfs/
+          ls -lah /tmp/pdfs
           for f in *.pdf; do mv -f "$f" /tmp/pdfs/; done
+          ls -lah /tmp/pdfs
           git checkout -b examples origin/examples
           git clean -df
+          ls -lah
           for f in /tmp/pdfs/*.pdf; do mv -f "$f" ./; done
+          ls -lah
           git add *.pdf
           git status
           git commit -m "ci: Update example PDFs." --no-allow-empty || exit 0
